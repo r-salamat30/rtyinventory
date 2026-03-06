@@ -2,118 +2,135 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RTY MOTOPARTS · Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="app-container">
-        <!-- Navigation -->
-        <nav class="navbar">
-            <div class="nav-brand">
-                <div class="brand-logo">RTY</div>
-                <span class="brand-name">MOTOPARTS</span>
-                <span class="brand-version">v2.0</span>
+    <div class="app">
+        <!-- Top Navigation -->
+        <header class="header">
+            <div class="header-left">
+                <div class="logo">
+                    <span class="logo-mark">RTY</span>
+                    <span class="logo-text">MOTOPARTS</span>
+                </div>
+                <span class="header-badge">Enterprise v3.0</span>
             </div>
             
-            <div class="nav-user" id="userMenu">
-                <div class="user-avatar" id="userAvatar"></div>
-                <div class="user-details">
-                    <span class="user-name" id="displayName"></span>
-                    <span class="user-role" id="userRole"></span>
+            <div class="header-right">
+                <div class="user-menu">
+                    <div class="user-info">
+                        <span class="user-name" id="displayName"></span>
+                        <span class="user-role" id="userRole"></span>
+                    </div>
+                    <div class="user-avatar" id="userAvatar"></div>
+                    <button onclick="logout()" class="btn-icon" title="Sign out">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            <polyline points="16 17 21 12 16 7"></polyline>
+                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
+                    </button>
                 </div>
-                <button onclick="logout()" class="btn-logout" title="Logout">
-                    <span>🚪</span>
-                </button>
             </div>
-        </nav>
+        </header>
 
         <!-- Main Content -->
-        <main class="main-content">
-            <!-- Welcome Banner -->
-            <div class="welcome-banner">
-                <div class="welcome-text">
-                    <h2>Welcome to RTY MOTOPARTS</h2>
-                    <p id="inventoryDate"></p>
+        <main class="main">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Inventory Dashboard</h1>
+                    <p class="page-subtitle" id="inventoryDate"></p>
                 </div>
-                <div class="quick-actions">
+                <div class="page-actions">
                     <button onclick="showAddModal()" class="btn-primary">
-                        <span class="btn-icon">+</span>
-                        <span class="btn-text">New Part</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        New Part
                     </button>
                     <button onclick="exportInventory()" class="btn-secondary">
-                        <span class="btn-icon">📥</span>
-                        <span class="btn-text">Export</span>
-                    </button>
-                    <button onclick="printInventory()" class="btn-secondary">
-                        <span class="btn-icon">🖨️</span>
-                        <span class="btn-text">Print</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Export
                     </button>
                 </div>
             </div>
 
             <!-- Empty State -->
             <div id="emptyState" class="empty-state">
-                <div class="empty-icon">🏍️</div>
-                <h3>RTY Inventory is Empty</h3>
-                <p>Start building your motorcycle parts catalog</p>
-                <button onclick="showAddModal()" class="btn-primary btn-large">
-                    <span class="btn-icon">+</span>
-                    Add Your First Part
-                </button>
-                <div class="empty-tips">
-                    <p>💡 Quick tips:</p>
-                    <ul>
-                        <li>Add part details like SKU, name, and category</li>
-                        <li>Set minimum stock levels for alerts</li>
-                        <li>Track compatible motorcycle models</li>
-                    </ul>
+                <div class="empty-state-icon">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                    </svg>
                 </div>
+                <h3>No parts in inventory</h3>
+                <p>Start by adding your first motorcycle part</p>
+                <button onclick="showAddModal()" class="btn-primary">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    Add First Part
+                </button>
             </div>
 
             <!-- Dashboard Content -->
             <div id="dashboardContent" style="display: none;">
-                <!-- Stats Cards -->
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-icon">📦</div>
-                        <div class="stat-details">
-                            <span class="stat-label">Total Parts</span>
-                            <span class="stat-value" id="totalParts">0</span>
+                <!-- KPI Cards -->
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-icon">📦</div>
+                        <div class="kpi-content">
+                            <span class="kpi-label">Total Parts</span>
+                            <span class="kpi-value" id="totalParts">0</span>
                         </div>
                     </div>
                     
-                    <div class="stat-card">
-                        <div class="stat-icon">⚠️</div>
-                        <div class="stat-details">
-                            <span class="stat-label">Low Stock</span>
-                            <span class="stat-value warning" id="lowStockCount">0</span>
+                    <div class="kpi-card warning">
+                        <div class="kpi-icon">⚠️</div>
+                        <div class="kpi-content">
+                            <span class="kpi-label">Low Stock</span>
+                            <span class="kpi-value" id="lowStockCount">0</span>
                         </div>
                     </div>
                     
-                    <div class="stat-card">
-                        <div class="stat-icon">💰</div>
-                        <div class="stat-details">
-                            <span class="stat-label">Inventory Value</span>
-                            <span class="stat-value" id="totalValue">₱0</span>
+                    <div class="kpi-card">
+                        <div class="kpi-icon">💰</div>
+                        <div class="kpi-content">
+                            <span class="kpi-label">Inventory Value</span>
+                            <span class="kpi-value" id="totalValue">₱0</span>
                         </div>
                     </div>
                     
-                    <div class="stat-card">
-                        <div class="stat-icon">🏷️</div>
-                        <div class="stat-details">
-                            <span class="stat-label">Categories</span>
-                            <span class="stat-value" id="categoryCount">0</span>
+                    <div class="kpi-card">
+                        <div class="kpi-icon">🏷️</div>
+                        <div class="kpi-content">
+                            <span class="kpi-label">Categories</span>
+                            <span class="kpi-value" id="categoryCount">0</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Search and Filter -->
+                <!-- Search & Filter -->
                 <div class="search-section">
                     <div class="search-wrapper">
-                        <span class="search-icon">🔍</span>
+                        <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
                         <input type="text" id="searchInput" placeholder="Search by part name, SKU, or model..." onkeyup="filterInventory()">
-                        <button onclick="clearSearch()" class="search-clear" id="clearSearch" style="display: none;">✕</button>
+                        <button onclick="clearSearch()" class="search-clear" id="clearSearch">✕</button>
                     </div>
                     
                     <select id="categoryFilter" class="filter-select" onchange="filterInventory()">
@@ -126,51 +143,40 @@
                         <option value="Accessories">Accessories</option>
                         <option value="Tires">Tires & Wheels</option>
                         <option value="Transmission">Transmission</option>
-                        <option value="Tools">Tools & Equipment</option>
-                        <option value="Oil">Oils & Lubricants</option>
                     </select>
                 </div>
 
                 <!-- Low Stock Alert -->
-                <div id="lowStockBanner" class="alert-banner" style="display: none;">
+                <div id="lowStockBanner" class="alert-banner">
                     <div class="alert-icon">⚠️</div>
                     <div class="alert-message">
-                        <strong>RTY Alert:</strong>
+                        <strong>Low Stock Alert:</strong>
                         <span id="lowStockMessage"></span>
                     </div>
-                    <button onclick="scrollToLowStock()" class="alert-action">View Items</button>
+                    <button onclick="scrollToLowStock()" class="alert-action">Review</button>
                 </div>
 
-                <!-- Desktop Table View -->
-                <div class="table-container desktop-view">
-                    <table class="inventory-table">
+                <!-- Table View -->
+                <div class="table-container">
+                    <table class="data-table">
                         <thead>
                             <tr>
                                 <th>SKU</th>
                                 <th>Part Name</th>
                                 <th>Category</th>
-                                <th>Compatible Models</th>
+                                <th>Models</th>
                                 <th>Stock</th>
-                                <th>Price (₱)</th>
-                                <th>Total Value</th>
+                                <th>Price</th>
+                                <th>Total</th>
                                 <th>Status</th>
-                                <th>Actions</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody id="inventoryBody"></tbody>
                     </table>
                 </div>
-
-                <!-- Mobile Card View -->
-                <div class="cards-container mobile-view" id="inventoryCards"></div>
             </div>
         </main>
-
-        <!-- Footer -->
-        <footer class="footer">
-            <p>© 2024 RTY MOTOPARTS. All rights reserved.</p>
-            <p class="footer-stats" id="footerStats"></p>
-        </footer>
     </div>
 
     <!-- Add/Edit Modal -->
@@ -178,84 +184,85 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2 id="modalTitle">Add New Part</h2>
-                <button onclick="closeModal()" class="modal-close">&times;</button>
+                <button onclick="closeModal()" class="modal-close">✕</button>
             </div>
             
             <form id="itemForm" onsubmit="saveItem(event)">
                 <input type="hidden" id="itemId">
                 
-                <div class="form-grid">
-                    <div class="form-group full-width">
-                        <label>Part Name <span class="required">*</span></label>
-                        <input type="text" id="partName" required placeholder="e.g., Brake Pad Set (Front)">
+                <div class="form-layout">
+                    <div class="form-section">
+                        <h3>Basic Information</h3>
+                        <div class="form-group">
+                            <label>Part Name <span class="required">*</span></label>
+                            <input type="text" id="partName" required placeholder="e.g., Brake Pad Set">
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>SKU <span class="required">*</span></label>
+                                <input type="text" id="sku" required placeholder="RTY-BP-001">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Category <span class="required">*</span></label>
+                                <select id="category" required>
+                                    <option value="">Select</option>
+                                    <option value="Engine">Engine Parts</option>
+                                    <option value="Brakes">Brake System</option>
+                                    <option value="Suspension">Suspension</option>
+                                    <option value="Electrical">Electrical</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Compatible Models</label>
+                            <input type="text" id="compatibleModels" placeholder="e.g., Honda Click, Yamaha Mio">
+                        </div>
                     </div>
                     
-                    <div class="form-group">
-                        <label>SKU <span class="required">*</span></label>
-                        <input type="text" id="sku" required placeholder="e.g., RTY-BP-001">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Category <span class="required">*</span></label>
-                        <select id="category" required>
-                            <option value="">Select Category</option>
-                            <option value="Engine">Engine Parts</option>
-                            <option value="Brakes">Brake System</option>
-                            <option value="Suspension">Suspension</option>
-                            <option value="Electrical">Electrical</option>
-                            <option value="Body">Body Parts</option>
-                            <option value="Accessories">Accessories</option>
-                            <option value="Tires">Tires & Wheels</option>
-                            <option value="Transmission">Transmission</option>
-                            <option value="Tools">Tools & Equipment</option>
-                            <option value="Oil">Oils & Lubricants</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group full-width">
-                        <label>Compatible Motorcycle Models</label>
-                        <input type="text" id="compatibleModels" placeholder="e.g., Honda Click 125, Yamaha Mio, Suzuki Raider">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Quantity <span class="required">*</span></label>
-                        <input type="number" id="quantity" required min="0" value="0">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Price (₱) <span class="required">*</span></label>
-                        <input type="number" id="price" required min="0" step="0.01" value="0.00">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Supplier</label>
-                        <input type="text" id="supplier" placeholder="Supplier name">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Min Stock Level</label>
-                        <input type="number" id="minStock" min="0" value="5">
-                    </div>
-                    
-                    <div class="form-group full-width">
-                        <label>Location/Rack</label>
-                        <input type="text" id="location" placeholder="e.g., Aisle 3, Rack B-12">
-                    </div>
-                    
-                    <div class="form-group full-width">
-                        <label>Part Number (OEM)</label>
-                        <input type="text" id="oemNumber" placeholder="e.g., 45105-KRN-831">
-                    </div>
-                    
-                    <div class="form-group full-width">
-                        <label>Notes / Description</label>
-                        <textarea id="description" rows="3" placeholder="Additional details, specifications, special instructions..."></textarea>
+                    <div class="form-section">
+                        <h3>Stock & Pricing</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Quantity <span class="required">*</span></label>
+                                <input type="number" id="quantity" required min="0" value="0">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Price (₱) <span class="required">*</span></label>
+                                <input type="number" id="price" required min="0" step="0.01" value="0.00">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Min Stock Level</label>
+                                <input type="number" id="minStock" min="0" value="5">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Location</label>
+                                <input type="text" id="location" placeholder="Aisle-Rack">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Supplier</label>
+                            <input type="text" id="supplier" placeholder="Supplier name">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>OEM Number</label>
+                            <input type="text" id="oemNumber" placeholder="Original part number">
+                        </div>
                     </div>
                 </div>
                 
-                <div class="modal-actions">
+                <div class="form-actions">
                     <button type="submit" class="btn-primary">Save Part</button>
-                    <button type="button" onclick="closeModal()" class="btn-secondary">Cancel</button>
+                    <button type="button" onclick="closeModal()" class="btn-text">Cancel</button>
                 </div>
             </form>
         </div>
@@ -263,66 +270,60 @@
 
     <!-- Stock Adjustment Modal -->
     <div id="stockModal" class="modal">
-        <div class="modal-content small">
+        <div class="modal-content compact">
             <div class="modal-header">
                 <h2>Adjust Stock</h2>
-                <button onclick="closeStockModal()" class="modal-close">&times;</button>
+                <button onclick="closeStockModal()" class="modal-close">✕</button>
             </div>
             
-            <div id="stockItemInfo" class="stock-info"></div>
+            <div class="stock-info" id="stockItemInfo"></div>
             
             <div class="stock-controls">
-                <div class="stock-quick-btns">
-                    <button onclick="quickAdjust('subtract', 1)" class="stock-btn">-1</button>
-                    <button onclick="quickAdjust('subtract', 5)" class="stock-btn">-5</button>
-                    <button onclick="quickAdjust('subtract', 10)" class="stock-btn">-10</button>
+                <div class="stock-quick-actions">
+                    <button onclick="quickAdjust('subtract', 1)" class="btn-quick">−1</button>
+                    <button onclick="quickAdjust('subtract', 5)" class="btn-quick">−5</button>
+                    <button onclick="quickAdjust('subtract', 10)" class="btn-quick">−10</button>
                 </div>
                 
-                <div class="stock-input-group">
-                    <input type="number" id="customAdjustment" placeholder="Enter quantity" min="-999" max="999">
+                <div class="stock-custom">
+                    <input type="number" id="customAdjustment" placeholder="Custom amount">
                     <button onclick="applyCustomAdjustment()" class="btn-primary">Apply</button>
                 </div>
                 
-                <div class="stock-quick-btns">
-                    <button onclick="quickAdjust('add', 1)" class="stock-btn">+1</button>
-                    <button onclick="quickAdjust('add', 5)" class="stock-btn">+5</button>
-                    <button onclick="quickAdjust('add', 10)" class="stock-btn">+10</button>
+                <div class="stock-quick-actions">
+                    <button onclick="quickAdjust('add', 1)" class="btn-quick">+1</button>
+                    <button onclick="quickAdjust('add', 5)" class="btn-quick">+5</button>
+                    <button onclick="quickAdjust('add', 10)" class="btn-quick">+10</button>
                 </div>
             </div>
             
-            <div class="current-stock">
+            <div class="stock-current">
                 <span>Current Stock:</span>
                 <strong id="currentStockDisplay">0</strong>
             </div>
-            
-            <div class="stock-history" id="stockHistory" style="display: none;">
-                <h4>Recent Adjustments</h4>
-                <div id="stockHistoryList"></div>
-            </div>
         </div>
     </div>
 
-    <!-- Confirmation Modal -->
+    <!-- Confirm Modal -->
     <div id="confirmModal" class="modal">
-        <div class="modal-content small">
+        <div class="modal-content compact">
             <div class="modal-header">
                 <h2>Confirm Action</h2>
-                <button onclick="closeConfirmModal()" class="modal-close">&times;</button>
+                <button onclick="closeConfirmModal()" class="modal-close">✕</button>
             </div>
             
             <div class="confirm-content">
-                <p id="confirmMessage">Are you sure you want to delete this part?</p>
-                <p id="confirmDetails" class="confirm-details"></p>
+                <p id="confirmMessage"></p>
             </div>
             
-            <div class="modal-actions">
-                <button onclick="executeDelete()" class="btn-danger">Yes, Delete</button>
-                <button onclick="closeConfirmModal()" class="btn-secondary">Cancel</button>
+            <div class="confirm-actions">
+                <button onclick="executeDelete()" class="btn-danger">Delete</button>
+                <button onclick="closeConfirmModal()" class="btn-text">Cancel</button>
             </div>
         </div>
     </div>
 
-    <!-- Toast Notification -->
+    <!-- Toast -->
     <div id="toast" class="toast"></div>
 
     <script src="script.js"></script>
