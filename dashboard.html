@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>RTY MOTOPARTS · Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-brand">
+                <div class="brand-logo">RTY</div>
+                <span class="brand-name">MOTOPARTS</span>
+                <span class="brand-version">v2.0</span>
+            </div>
+            
+            <div class="nav-user" id="userMenu">
+                <div class="user-avatar" id="userAvatar"></div>
+                <div class="user-details">
+                    <span class="user-name" id="displayName"></span>
+                    <span class="user-role" id="userRole"></span>
+                </div>
+                <button onclick="logout()" class="btn-logout" title="Logout">
+                    <span>🚪</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Welcome Banner -->
+            <div class="welcome-banner">
+                <div class="welcome-text">
+                    <h2>Welcome to RTY MOTOPARTS</h2>
+                    <p id="inventoryDate"></p>
+                </div>
+                <div class="quick-actions">
+                    <button onclick="showAddModal()" class="btn-primary">
+                        <span class="btn-icon">+</span>
+                        <span class="btn-text">New Part</span>
+                    </button>
+                    <button onclick="exportInventory()" class="btn-secondary">
+                        <span class="btn-icon">📥</span>
+                        <span class="btn-text">Export</span>
+                    </button>
+                    <button onclick="printInventory()" class="btn-secondary">
+                        <span class="btn-icon">🖨️</span>
+                        <span class="btn-text">Print</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="empty-state">
+                <div class="empty-icon">🏍️</div>
+                <h3>RTY Inventory is Empty</h3>
+                <p>Start building your motorcycle parts catalog</p>
+                <button onclick="showAddModal()" class="btn-primary btn-large">
+                    <span class="btn-icon">+</span>
+                    Add Your First Part
+                </button>
+                <div class="empty-tips">
+                    <p>💡 Quick tips:</p>
+                    <ul>
+                        <li>Add part details like SKU, name, and category</li>
+                        <li>Set minimum stock levels for alerts</li>
+                        <li>Track compatible motorcycle models</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Dashboard Content -->
+            <div id="dashboardContent" style="display: none;">
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📦</div>
+                        <div class="stat-details">
+                            <span class="stat-label">Total Parts</span>
+                            <span class="stat-value" id="totalParts">0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">⚠️</div>
+                        <div class="stat-details">
+                            <span class="stat-label">Low Stock</span>
+                            <span class="stat-value warning" id="lowStockCount">0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-details">
+                            <span class="stat-label">Inventory Value</span>
+                            <span class="stat-value" id="totalValue">₱0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">🏷️</div>
+                        <div class="stat-details">
+                            <span class="stat-label">Categories</span>
+                            <span class="stat-value" id="categoryCount">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Search and Filter -->
+                <div class="search-section">
+                    <div class="search-wrapper">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="searchInput" placeholder="Search by part name, SKU, or model..." onkeyup="filterInventory()">
+                        <button onclick="clearSearch()" class="search-clear" id="clearSearch" style="display: none;">✕</button>
+                    </div>
+                    
+                    <select id="categoryFilter" class="filter-select" onchange="filterInventory()">
+                        <option value="">All Categories</option>
+                        <option value="Engine">Engine Parts</option>
+                        <option value="Brakes">Brake System</option>
+                        <option value="Suspension">Suspension</option>
+                        <option value="Electrical">Electrical</option>
+                        <option value="Body">Body Parts</option>
+                        <option value="Accessories">Accessories</option>
+                        <option value="Tires">Tires & Wheels</option>
+                        <option value="Transmission">Transmission</option>
+                        <option value="Tools">Tools & Equipment</option>
+                        <option value="Oil">Oils & Lubricants</option>
+                    </select>
+                </div>
+
+                <!-- Low Stock Alert -->
+                <div id="lowStockBanner" class="alert-banner" style="display: none;">
+                    <div class="alert-icon">⚠️</div>
+                    <div class="alert-message">
+                        <strong>RTY Alert:</strong>
+                        <span id="lowStockMessage"></span>
+                    </div>
+                    <button onclick="scrollToLowStock()" class="alert-action">View Items</button>
+                </div>
+
+                <!-- Desktop Table View -->
+                <div class="table-container desktop-view">
+                    <table class="inventory-table">
+                        <thead>
+                            <tr>
+                                <th>SKU</th>
+                                <th>Part Name</th>
+                                <th>Category</th>
+                                <th>Compatible Models</th>
+                                <th>Stock</th>
+                                <th>Price (₱)</th>
+                                <th>Total Value</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventoryBody"></tbody>
+                    </table>
+                </div>
+
+                <!-- Mobile Card View -->
+                <div class="cards-container mobile-view" id="inventoryCards"></div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>© 2024 RTY MOTOPARTS. All rights reserved.</p>
+            <p class="footer-stats" id="footerStats"></p>
+        </footer>
+    </div>
+
+    <!-- Add/Edit Modal -->
+    <div id="itemModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Add New Part</h2>
+                <button onclick="closeModal()" class="modal-close">&times;</button>
+            </div>
+            
+            <form id="itemForm" onsubmit="saveItem(event)">
+                <input type="hidden" id="itemId">
+                
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label>Part Name <span class="required">*</span></label>
+                        <input type="text" id="partName" required placeholder="e.g., Brake Pad Set (Front)">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>SKU <span class="required">*</span></label>
+                        <input type="text" id="sku" required placeholder="e.g., RTY-BP-001">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Category <span class="required">*</span></label>
+                        <select id="category" required>
+                            <option value="">Select Category</option>
+                            <option value="Engine">Engine Parts</option>
+                            <option value="Brakes">Brake System</option>
+                            <option value="Suspension">Suspension</option>
+                            <option value="Electrical">Electrical</option>
+                            <option value="Body">Body Parts</option>
+                            <option value="Accessories">Accessories</option>
+                            <option value="Tires">Tires & Wheels</option>
+                            <option value="Transmission">Transmission</option>
+                            <option value="Tools">Tools & Equipment</option>
+                            <option value="Oil">Oils & Lubricants</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label>Compatible Motorcycle Models</label>
+                        <input type="text" id="compatibleModels" placeholder="e.g., Honda Click 125, Yamaha Mio, Suzuki Raider">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Quantity <span class="required">*</span></label>
+                        <input type="number" id="quantity" required min="0" value="0">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Price (₱) <span class="required">*</span></label>
+                        <input type="number" id="price" required min="0" step="0.01" value="0.00">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Supplier</label>
+                        <input type="text" id="supplier" placeholder="Supplier name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Min Stock Level</label>
+                        <input type="number" id="minStock" min="0" value="5">
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label>Location/Rack</label>
+                        <input type="text" id="location" placeholder="e.g., Aisle 3, Rack B-12">
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label>Part Number (OEM)</label>
+                        <input type="text" id="oemNumber" placeholder="e.g., 45105-KRN-831">
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label>Notes / Description</label>
+                        <textarea id="description" rows="3" placeholder="Additional details, specifications, special instructions..."></textarea>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="submit" class="btn-primary">Save Part</button>
+                    <button type="button" onclick="closeModal()" class="btn-secondary">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Stock Adjustment Modal -->
+    <div id="stockModal" class="modal">
+        <div class="modal-content small">
+            <div class="modal-header">
+                <h2>Adjust Stock</h2>
+                <button onclick="closeStockModal()" class="modal-close">&times;</button>
+            </div>
+            
+            <div id="stockItemInfo" class="stock-info"></div>
+            
+            <div class="stock-controls">
+                <div class="stock-quick-btns">
+                    <button onclick="quickAdjust('subtract', 1)" class="stock-btn">-1</button>
+                    <button onclick="quickAdjust('subtract', 5)" class="stock-btn">-5</button>
+                    <button onclick="quickAdjust('subtract', 10)" class="stock-btn">-10</button>
+                </div>
+                
+                <div class="stock-input-group">
+                    <input type="number" id="customAdjustment" placeholder="Enter quantity" min="-999" max="999">
+                    <button onclick="applyCustomAdjustment()" class="btn-primary">Apply</button>
+                </div>
+                
+                <div class="stock-quick-btns">
+                    <button onclick="quickAdjust('add', 1)" class="stock-btn">+1</button>
+                    <button onclick="quickAdjust('add', 5)" class="stock-btn">+5</button>
+                    <button onclick="quickAdjust('add', 10)" class="stock-btn">+10</button>
+                </div>
+            </div>
+            
+            <div class="current-stock">
+                <span>Current Stock:</span>
+                <strong id="currentStockDisplay">0</strong>
+            </div>
+            
+            <div class="stock-history" id="stockHistory" style="display: none;">
+                <h4>Recent Adjustments</h4>
+                <div id="stockHistoryList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content small">
+            <div class="modal-header">
+                <h2>Confirm Action</h2>
+                <button onclick="closeConfirmModal()" class="modal-close">&times;</button>
+            </div>
+            
+            <div class="confirm-content">
+                <p id="confirmMessage">Are you sure you want to delete this part?</p>
+                <p id="confirmDetails" class="confirm-details"></p>
+            </div>
+            
+            <div class="modal-actions">
+                <button onclick="executeDelete()" class="btn-danger">Yes, Delete</button>
+                <button onclick="closeConfirmModal()" class="btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

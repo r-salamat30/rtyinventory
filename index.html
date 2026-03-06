@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>RTY MOTOPARTS · Inventory System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="login-page">
+    <div class="app-container">
+        <div class="login-card">
+            <div class="login-brand">
+                <div class="brand-icon">
+                    <span class="rty-logo">RTY</span>
+                </div>
+                <h1>RTY MOTOPARTS</h1>
+                <p class="brand-tagline">Professional Inventory Management</p>
+                <div class="brand-badge">Since 2024</div>
+            </div>
+            
+            <div class="login-form-container">
+                <form id="loginForm" onsubmit="handleLogin(event)">
+                    <div class="input-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" placeholder="Enter username" autocomplete="off" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="Enter password" required>
+                    </div>
+                    
+                    <div id="loginError" class="error-message"></div>
+                    
+                    <button type="submit" class="btn-primary btn-full">Sign In to Dashboard</button>
+                </form>
+                
+                <div class="login-help">
+                    <div class="credentials-box">
+                        <p class="credentials-title">🔐 Demo Access</p>
+                        <div class="credential-row">
+                            <span class="role">Admin:</span>
+                            <span class="details">admin / admin123</span>
+                        </div>
+                        <div class="credential-row">
+                            <span class="role">Manager:</span>
+                            <span class="details">manager / manager123</span>
+                        </div>
+                        <div class="credential-row">
+                            <span class="role">Staff:</span>
+                            <span class="details">staff / staff123</span>
+                        </div>
+                    </div>
+                    <p class="security-note">
+                        <span class="icon">🔒</span>
+                        All data stored locally in your browser
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const USERS = {
+            'admin': { password: 'admin123', name: 'Administrator', role: 'admin' },
+            'manager': { password: 'manager123', name: 'Store Manager', role: 'manager' },
+            'staff': { password: 'staff123', name: 'Inventory Staff', role: 'staff' }
+        };
+
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const errorElement = document.getElementById('loginError');
+
+            if (USERS[username] && USERS[username].password === password) {
+                localStorage.setItem('rtyCurrentUser', JSON.stringify({
+                    username: username,
+                    name: USERS[username].name,
+                    role: USERS[username].role,
+                    loginTime: new Date().toLocaleString()
+                }));
+                
+                window.location.href = 'dashboard.html';
+            } else {
+                errorElement.textContent = 'Invalid username or password';
+                document.querySelector('.login-card').style.animation = 'shake 0.5s ease';
+                setTimeout(() => {
+                    document.querySelector('.login-card').style.animation = '';
+                }, 500);
+            }
+        }
+
+        if (localStorage.getItem('rtyCurrentUser')) {
+            window.location.href = 'dashboard.html';
+        }
+    </script>
+</body>
+</html>
