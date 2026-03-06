@@ -25,7 +25,7 @@
                 <div class="user-menu">
                     <div class="user-info">
                         <span class="user-name" id="displayName"></span>
-                        <span class="user-role" id="userRole"></span>
+                        <span class="user-role">Administrator</span>
                     </div>
                     <div class="user-avatar" id="userAvatar"></div>
                     <button onclick="logout()" class="btn-icon" title="Sign out">
@@ -129,7 +129,7 @@
                             <circle cx="11" cy="11" r="8"></circle>
                             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                         </svg>
-                        <input type="text" id="searchInput" placeholder="Search by part name, SKU, or model..." onkeyup="filterInventory()">
+                        <input type="text" id="searchInput" placeholder="Search by part name or model..." onkeyup="filterInventory()">
                         <button onclick="clearSearch()" class="search-clear" id="clearSearch">✕</button>
                     </div>
                     
@@ -138,16 +138,16 @@
                         <option value="Engine">Engine Parts</option>
                         <option value="Brakes">Brake System</option>
                         <option value="Suspension">Suspension</option>
+                        <option value="Wheels">Wheels & Tires</option>
                         <option value="Electrical">Electrical</option>
                         <option value="Body">Body Parts</option>
                         <option value="Accessories">Accessories</option>
-                        <option value="Tires">Tires & Wheels</option>
                         <option value="Transmission">Transmission</option>
                     </select>
                 </div>
 
                 <!-- Low Stock Alert -->
-                <div id="lowStockBanner" class="alert-banner">
+                <div id="lowStockBanner" class="alert-banner" style="display: none;">
                     <div class="alert-icon">⚠️</div>
                     <div class="alert-message">
                         <strong>Low Stock Alert:</strong>
@@ -161,13 +161,12 @@
                     <table class="data-table">
                         <thead>
                             <tr>
-                                <th>SKU</th>
                                 <th>Part Name</th>
                                 <th>Category</th>
                                 <th>Models</th>
                                 <th>Stock</th>
-                                <th>Price</th>
-                                <th>Total</th>
+                                <th>Price (₱)</th>
+                                <th>Total Value</th>
                                 <th>Status</th>
                                 <th></th>
                             </tr>
@@ -193,6 +192,7 @@
                 <div class="form-layout">
                     <div class="form-section">
                         <h3>Basic Information</h3>
+                        
                         <div class="form-group">
                             <label>Part Name <span class="required">*</span></label>
                             <input type="text" id="partName" required placeholder="e.g., Brake Pad Set">
@@ -200,19 +200,23 @@
                         
                         <div class="form-row">
                             <div class="form-group">
-                                <label>SKU <span class="required">*</span></label>
-                                <input type="text" id="sku" required placeholder="RTY-BP-001">
-                            </div>
-                            
-                            <div class="form-group">
                                 <label>Category <span class="required">*</span></label>
                                 <select id="category" required>
                                     <option value="">Select</option>
                                     <option value="Engine">Engine Parts</option>
                                     <option value="Brakes">Brake System</option>
                                     <option value="Suspension">Suspension</option>
+                                    <option value="Wheels">Wheels & Tires</option>
                                     <option value="Electrical">Electrical</option>
+                                    <option value="Body">Body Parts</option>
+                                    <option value="Accessories">Accessories</option>
+                                    <option value="Transmission">Transmission</option>
                                 </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Location</label>
+                                <input type="text" id="location" placeholder="Aisle-Rack">
                             </div>
                         </div>
                         
@@ -243,14 +247,9 @@
                             </div>
                             
                             <div class="form-group">
-                                <label>Location</label>
-                                <input type="text" id="location" placeholder="Aisle-Rack">
+                                <label>Supplier</label>
+                                <input type="text" id="supplier" placeholder="Supplier name">
                             </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Supplier</label>
-                            <input type="text" id="supplier" placeholder="Supplier name">
                         </div>
                         
                         <div class="form-group">
