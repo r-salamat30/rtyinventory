@@ -2,59 +2,90 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>RTY MOTOPARTS · Inventory System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RTY MOTOPARTS · Enterprise Inventory</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="login-page">
-    <div class="app-container">
-        <div class="login-card">
-            <div class="login-brand">
-                <div class="brand-icon">
-                    <span class="rty-logo">RTY</span>
+<body>
+    <div class="app">
+        <div class="auth-container">
+            <div class="auth-sidebar">
+                <div class="auth-brand">
+                    <div class="brand-mark"></div>
+                    <h1 class="brand-name">RTY<span>MOTOPARTS</span></h1>
+                    <p class="brand-tagline">Enterprise Inventory Management</p>
                 </div>
-                <h1>RTY MOTOPARTS</h1>
-                <p class="brand-tagline">Professional Inventory Management</p>
-                <div class="brand-badge">Since 2024</div>
+                <div class="auth-features">
+                    <div class="feature-item">
+                        <div class="feature-icon">📦</div>
+                        <div class="feature-text">
+                            <h4>Real-time Tracking</h4>
+                            <p>Monitor stock levels instantly</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">⚡</div>
+                        <div class="feature-text">
+                            <h4>Smart Analytics</h4>
+                            <p>Automated value calculations</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🛡️</div>
+                        <div class="feature-text">
+                            <h4>Secure Access</h4>
+                            <p>Role-based authorization</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="auth-footer">
+                    <p>© 2024 RTY MOTOPARTS</p>
+                    <p>Version 3.0 Enterprise</p>
+                </div>
             </div>
             
-            <div class="login-form-container">
-                <form id="loginForm" onsubmit="handleLogin(event)">
-                    <div class="input-group">
-                        <label for="username">Username</label>
-                        <input type="text" id="username" placeholder="Enter username" autocomplete="off" required>
+            <div class="auth-main">
+                <div class="auth-card">
+                    <h2>Access Dashboard</h2>
+                    <p class="auth-subtitle">Sign in to manage your inventory</p>
+                    
+                    <form id="loginForm" onsubmit="handleLogin(event)">
+                        <div class="input-group">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" placeholder="Enter your username" autocomplete="off" required>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" placeholder="Enter your password" required>
+                        </div>
+                        
+                        <div id="loginError" class="error-message"></div>
+                        
+                        <button type="submit" class="btn-primary btn-full">Sign In</button>
+                    </form>
+                    
+                    <div class="auth-divider">
+                        <span>Demo Credentials</span>
                     </div>
                     
-                    <div class="input-group">
-                        <label for="password">Password</label>
-                        <input type="password" id="password" placeholder="Enter password" required>
-                    </div>
-                    
-                    <div id="loginError" class="error-message"></div>
-                    
-                    <button type="submit" class="btn-primary btn-full">Sign In to Dashboard</button>
-                </form>
-                
-                <div class="login-help">
-                    <div class="credentials-box">
-                        <p class="credentials-title">🔐 Demo Access</p>
-                        <div class="credential-row">
-                            <span class="role">Admin:</span>
-                            <span class="details">admin / admin123</span>
+                    <div class="credentials-grid">
+                        <div class="credential-item">
+                            <span class="role-badge admin">Admin</span>
+                            <code>admin / admin123</code>
                         </div>
-                        <div class="credential-row">
-                            <span class="role">Manager:</span>
-                            <span class="details">manager / manager123</span>
+                        <div class="credential-item">
+                            <span class="role-badge manager">Manager</span>
+                            <code>manager / manager123</code>
                         </div>
-                        <div class="credential-row">
-                            <span class="role">Staff:</span>
-                            <span class="details">staff / staff123</span>
+                        <div class="credential-item">
+                            <span class="role-badge staff">Staff</span>
+                            <code>staff / staff123</code>
                         </div>
                     </div>
-                    <p class="security-note">
-                        <span class="icon">🔒</span>
-                        All data stored locally in your browser
-                    </p>
                 </div>
             </div>
         </div>
@@ -79,16 +110,12 @@
                     username: username,
                     name: USERS[username].name,
                     role: USERS[username].role,
-                    loginTime: new Date().toLocaleString()
+                    loginTime: new Date().toISOString()
                 }));
                 
                 window.location.href = 'dashboard.html';
             } else {
                 errorElement.textContent = 'Invalid username or password';
-                document.querySelector('.login-card').style.animation = 'shake 0.5s ease';
-                setTimeout(() => {
-                    document.querySelector('.login-card').style.animation = '';
-                }, 500);
             }
         }
 
