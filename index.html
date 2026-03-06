@@ -37,7 +37,7 @@
                         <div class="feature-icon">🛡️</div>
                         <div class="feature-text">
                             <h4>Secure Access</h4>
-                            <p>Role-based authorization</p>
+                            <p>Single admin authentication</p>
                         </div>
                     </div>
                 </div>
@@ -49,18 +49,18 @@
             
             <div class="auth-main">
                 <div class="auth-card">
-                    <h2>Access Dashboard</h2>
-                    <p class="auth-subtitle">Sign in to manage your inventory</p>
+                    <h2>Admin Access</h2>
+                    <p class="auth-subtitle">Sign in to manage inventory</p>
                     
                     <form id="loginForm" onsubmit="handleLogin(event)">
                         <div class="input-group">
                             <label for="username">Username</label>
-                            <input type="text" id="username" placeholder="Enter your username" autocomplete="off" required>
+                            <input type="text" id="username" placeholder="Enter username" autocomplete="off" required>
                         </div>
                         
                         <div class="input-group">
                             <label for="password">Password</label>
-                            <input type="password" id="password" placeholder="Enter your password" required>
+                            <input type="password" id="password" placeholder="Enter password" required>
                         </div>
                         
                         <div id="loginError" class="error-message"></div>
@@ -69,22 +69,11 @@
                     </form>
                     
                     <div class="auth-divider">
-                        <span>Demo Credentials</span>
+                        <span>RTY MOTOPARTS</span>
                     </div>
                     
-                    <div class="credentials-grid">
-                        <div class="credential-item">
-                            <span class="role-badge admin">Admin</span>
-                            <code>admin / admin123</code>
-                        </div>
-                        <div class="credential-item">
-                            <span class="role-badge manager">Manager</span>
-                            <code>manager / manager123</code>
-                        </div>
-                        <div class="credential-item">
-                            <span class="role-badge staff">Staff</span>
-                            <code>staff / staff123</code>
-                        </div>
+                    <div class="auth-footer-mobile">
+                        <p>Authorized personnel only</p>
                     </div>
                 </div>
             </div>
@@ -92,11 +81,9 @@
     </div>
 
     <script>
-        const USERS = {
-            'admin': { password: 'admin123', name: 'Administrator', role: 'admin' },
-            'manager': { password: 'manager123', name: 'Store Manager', role: 'manager' },
-            'staff': { password: 'staff123', name: 'Inventory Staff', role: 'staff' }
-        };
+        // Single admin account
+        const ADMIN_USERNAME = 'admin';
+        const ADMIN_PASSWORD = 'rtysalamat';
 
         function handleLogin(event) {
             event.preventDefault();
@@ -105,17 +92,17 @@
             const password = document.getElementById('password').value;
             const errorElement = document.getElementById('loginError');
 
-            if (USERS[username] && USERS[username].password === password) {
+            if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
                 localStorage.setItem('rtyCurrentUser', JSON.stringify({
                     username: username,
-                    name: USERS[username].name,
-                    role: USERS[username].role,
+                    name: 'Administrator',
+                    role: 'admin',
                     loginTime: new Date().toISOString()
                 }));
                 
                 window.location.href = 'dashboard.html';
             } else {
-                errorElement.textContent = 'Invalid username or password';
+                errorElement.textContent = 'Invalid credentials';
             }
         }
 
