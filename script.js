@@ -1,6 +1,4 @@
 // RTY MOTOPARTS - Enterprise Inventory System
-// Professional JavaScript Core
-
 let inventory = [];
 let currentStockItem = null;
 let pendingDeleteId = null;
@@ -24,7 +22,6 @@ function checkAuth() {
     
     if (user) {
         document.getElementById('displayName').textContent = user.name;
-        document.getElementById('userRole').textContent = user.role;
         document.getElementById('userAvatar').textContent = user.name.charAt(0);
     }
     return true;
@@ -97,7 +94,6 @@ function filterInventory() {
     if (searchTerm) {
         filtered = filtered.filter(item => 
             item.name.toLowerCase().includes(searchTerm) ||
-            item.sku.toLowerCase().includes(searchTerm) ||
             (item.compatibleModels && item.compatibleModels.toLowerCase().includes(searchTerm))
         );
     }
@@ -120,7 +116,7 @@ function renderTable(items) {
     const tbody = document.getElementById('inventoryBody');
     
     if (items.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="9" class="no-results">No matching parts found</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="8" class="no-results">No matching parts found</td></tr>`;
         return;
     }
     
@@ -130,7 +126,6 @@ function renderTable(items) {
         
         return `
             <tr>
-                <td><span class="sku">${escapeHtml(item.sku)}</span></td>
                 <td>
                     <div class="part-info">
                         <span class="part-name">${escapeHtml(item.name)}</span>
@@ -178,7 +173,6 @@ function editItem(id) {
     document.getElementById('modalTitle').textContent = 'Edit Part';
     document.getElementById('itemId').value = item.id;
     document.getElementById('partName').value = item.name;
-    document.getElementById('sku').value = item.sku;
     document.getElementById('category').value = item.category;
     document.getElementById('compatibleModels').value = item.compatibleModels || '';
     document.getElementById('quantity').value = item.quantity;
@@ -195,16 +189,9 @@ function saveItem(event) {
     event.preventDefault();
     
     const itemId = document.getElementById('itemId').value;
-    const sku = document.getElementById('sku').value.trim().toUpperCase();
-    
-    if (!itemId && inventory.some(i => i.sku === sku)) {
-        showToast('SKU already exists', 'error');
-        return;
-    }
     
     const itemData = {
         name: document.getElementById('partName').value.trim(),
-        sku: sku,
         category: document.getElementById('category').value,
         compatibleModels: document.getElementById('compatibleModels').value.trim(),
         quantity: parseInt(document.getElementById('quantity').value) || 0,
@@ -255,7 +242,7 @@ function openStockModal(id) {
     currentStockItem = item;
     document.getElementById('stockItemInfo').innerHTML = `
         <strong>${escapeHtml(item.name)}</strong>
-        <span>SKU: ${item.sku}</span>
+        ${item.location ? `<span>Location: ${escapeHtml(item.location)}</span>` : ''}
     `;
     document.getElementById('currentStockDisplay').textContent = item.quantity;
     document.getElementById('stockModal').style.display = 'flex';
@@ -345,9 +332,8 @@ function exportInventory() {
         return;
     }
     
-    const headers = ['SKU', 'Part Name', 'Category', 'Models', 'Quantity', 'Price', 'Total', 'Supplier', 'Location'];
+    const headers = ['Part Name', 'Category', 'Models', 'Quantity', 'Price', 'Total', 'Supplier', 'Location', 'OEM'];
     const rows = inventory.map(item => [
-        item.sku,
         item.name,
         item.category,
         item.compatibleModels || '',
@@ -355,7 +341,8 @@ function exportInventory() {
         item.price,
         item.quantity * item.price,
         item.supplier || '',
-        item.location || ''
+        item.location || '',
+        item.oemNumber || ''
     ]);
     
     const csv = [headers, ...rows]
